@@ -1,0 +1,26 @@
+version: '2.3'
+services:
+  app:
+    build:
+      context: ${PWD}
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8080
+    depends_on:
+      - postgres
+  
+  postgres:
+    image: postgres:11.1
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
+      - POSTGRES_DB=postgres
+    volumes:
+      - ${PWD}/init:/docker-entrypoint-initdb.d
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
